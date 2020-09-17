@@ -3,47 +3,52 @@ const todoButton = document.querySelector(".todo-button");
 const todoInput = document.querySelector(".todo-input");
 const todoList = document.querySelector(".todo-list");
 const filterOption = document.querySelector(".filter-todo");
+const clearBtn = document.querySelector(".clear");
 //Event Listeners
 document.addEventListener("DOMContentLoaded", getTodos);
 todoButton.addEventListener("click", createTodo);
 todoList.addEventListener("click", createMark);
 todoList.addEventListener("click", deleteMark);
+clearBtn.addEventListener("click", clearAll);
 //filterOption event change not click
 filterOption.addEventListener("change", filterTodo);
 //Functions
 function createTodo(e) {
   e.preventDefault();
+  if (todoInput.value.trim() === "") {
+    alert("Enter a todo item");
+  } else {
+    //To DO Div
+    const todoDiv = document.createElement("div");
+    todoDiv.classList.add("todo");
 
-  //To DO Div
-  const todoDiv = document.createElement("div");
-  todoDiv.classList.add("todo");
+    //Create Li
+    const newTodo = document.createElement("li");
+    newTodo.classList.add("todo-item");
+    newTodo.innerText = todoInput.value;
+    todoDiv.appendChild(newTodo);
 
-  //Create Li
-  const newTodo = document.createElement("li");
-  newTodo.classList.add("todo-item");
-  newTodo.innerText = todoInput.value;
-  todoDiv.appendChild(newTodo);
+    //Add todo to localstorage
+    saveLocalTodos(todoInput.value);
 
-  //Add todo to localstorage
-  saveLocalTodos(todoInput.value);
+    //Checkmark button
+    const completedBtn = document.createElement("button");
+    completedBtn.classList.add("completed-btn");
+    completedBtn.innerHTML = '<i class="fas fa-check"></i>';
+    todoDiv.appendChild(completedBtn);
 
-  //Checkmark button
-  const completedBtn = document.createElement("button");
-  completedBtn.classList.add("completed-btn");
-  completedBtn.innerHTML = '<i class="fas fa-check"></i>';
-  todoDiv.appendChild(completedBtn);
+    //Trash button
+    const trashBtn = document.createElement("button");
+    trashBtn.classList.add("trash-btn");
+    trashBtn.innerHTML = '<i class="fas fa-trash"></i>';
+    todoDiv.appendChild(trashBtn);
 
-  //Trash button
-  const trashBtn = document.createElement("button");
-  trashBtn.classList.add("trash-btn");
-  trashBtn.innerHTML = '<i class="fas fa-trash"></i>';
-  todoDiv.appendChild(trashBtn);
+    //Append to todo-list
+    todoList.appendChild(todoDiv);
 
-  //Append to todo-list
-  todoList.appendChild(todoDiv);
-
-  //Clear the input
-  todoInput.value = "";
+    //Clear the input
+    todoInput.value = "";
+  }
 }
 //Function Delete todo
 function deleteMark(e) {
@@ -133,6 +138,7 @@ function getTodos() {
     const newTodo = document.createElement("li");
     newTodo.classList.add("todo-item");
     newTodo.innerText = todo;
+
     todoDiv.appendChild(newTodo);
 
     //Checkmark button
@@ -165,4 +171,9 @@ function removeLocalTodos(todo) {
   const todoIndex = todo.children.innerText;
   todos.splice(todos.indexOf(todoIndex), 1);
   localStorage.setItem("todos", JSON.stringify(todos));
+}
+
+function clearAll() {
+  localStorage.clear();
+  window.location.reload();
 }

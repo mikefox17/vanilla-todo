@@ -135,3 +135,26 @@ select {
   cursor: pointer;
   pointer-events: none;
 }
+
+.rstDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 20vh;
+}
+
+.clear {
+  color: #fda085;
+  cursor: pointer;
+  background: white;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  font-size: 2rem;
+  border: none;
+  background: white;
+}
+
+.clear:hover {
+  background: #fda085;
+  color: white;
+}
